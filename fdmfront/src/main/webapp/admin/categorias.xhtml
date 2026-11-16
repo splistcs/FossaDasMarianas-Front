@@ -1,0 +1,62 @@
+<ui:composition template="/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Categorias</ui:define>
+
+    <ui:define name="conteudo">
+        <h1>Categorias</h1>
+
+        <h:form id="formLista">
+            <p:commandButton value="Nova categoria" icon="pi pi-plus" action="#{categoriaCtrl.novo}"
+                             process="@this" update=":formDialogo" oncomplete="PF('dlgCategoria').show()"/>
+
+            <p:dataTable id="tabela" value="#{categoriaCtrl.categorias}" var="item" styleClass="fdm-filtros"
+                         emptyMessage="Nenhuma categoria cadastrada." paginator="true" rows="10">
+                <p:column headerText="Id" style="width: 5rem">
+                    <h:outputText value="#{item.id}"/>
+                </p:column>
+                <p:column headerText="Nome">
+                    <h:outputText value="#{item.nome}"/>
+                </p:column>
+                <p:column headerText="Ativa" style="width: 6rem">
+                    <h:outputText value="#{item.ativo ? 'Sim' : 'Não'}"/>
+                </p:column>
+                <p:column headerText="Ações" style="width: 9rem; text-align: center">
+                    <p:commandButton icon="pi pi-pencil" action="#{categoriaCtrl.editar(item)}"
+                                     process="@this" update=":formDialogo" oncomplete="PF('dlgCategoria').show()"
+                                     title="Editar"/>
+                    <p:commandButton icon="pi pi-trash" action="#{categoriaCtrl.excluir(item)}"
+                                     process="@this" update="tabela :growl" styleClass="ui-button-danger"
+                                     title="Excluir">
+                        <p:confirm header="Excluir categoria" message="Deseja excluir esta categoria?"
+                                   icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <h:form id="formDialogo" styleClass="fdm-formulario">
+            <p:dialog widgetVar="dlgCategoria" visible="#{categoriaCtrl.exibirDialogo}" header="Categoria" modal="true" responsive="true"
+                      closeOnEscape="true" width="420">
+                <p:ajax event="close" listener="#{categoriaCtrl.fecharDialogo}"/>
+                <p:outputPanel id="painel" styleClass="ui-fluid">
+                    <p:outputLabel for="nome" value="Nome"/>
+                    <p:inputText id="nome" value="#{categoriaCtrl.categoria.nome}" required="true"
+                                 requiredMessage="Informe o nome"/>
+                    <p:message for="nome"/>
+
+                    <p:outputLabel for="ativo" value="Ativa"/><br/>
+                    <p:toggleSwitch id="ativo" value="#{categoriaCtrl.categoria.ativo}"/>
+                </p:outputPanel>
+                <f:facet name="footer">
+                    <p:commandButton value="Salvar" icon="pi pi-check" action="#{categoriaCtrl.salvar}"
+                                     update="painel :formLista:tabela :growl"/>
+                </f:facet>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

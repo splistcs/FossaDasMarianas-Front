@@ -1,0 +1,63 @@
+<ui:composition template="/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Carrinho</ui:define>
+
+    <ui:define name="conteudo">
+        <h1>Seu carrinho</h1>
+
+        <p:outputPanel rendered="#{not sessaoCtrl.logado}">
+            <p>Para comprar, <h:link outcome="/login" value="entre na sua conta"/> ou
+                <h:link outcome="/cadastro" value="crie uma conta"/>.</p>
+        </p:outputPanel>
+
+        <h:form id="formCarrinho" rendered="#{sessaoCtrl.logado}">
+            <p:dataTable id="tabelaCarrinho" value="#{carrinhoCtrl.itens}" var="item"
+                         emptyMessage="Seu carrinho está vazio.">
+                <p:column headerText="Produto">
+                    <h:outputText value="#{carrinhoCtrl.nomeProduto(item)}"/><br/>
+                    <span class="fdm-marca"><h:outputText value="#{item.skuDto.especificacoesVisiveis}"/></span>
+                </p:column>
+                <p:column headerText="Preço">
+                    <h:outputText value="#{item.skuDto.preco}">
+                        <f:convertNumber type="currency" locale="pt_BR"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Quantidade">
+                    <p:spinner value="#{item.quantidade}" min="1" max="#{item.skuDto.estoque}">
+                        <p:ajax event="change" listener="#{carrinhoCtrl.alterarQuantidade(item)}"
+                                update="tabelaCarrinho total :growl"/>
+                    </p:spinner>
+                </p:column>
+                <p:column headerText="Subtotal">
+                    <h:outputText value="#{item.precoFinal}">
+                        <f:convertNumber type="currency" locale="pt_BR"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Remover" style="width: 6rem; text-align: center">
+                    <p:commandButton icon="pi pi-trash" action="#{carrinhoCtrl.remover(item)}"
+                                     process="@this" update="tabelaCarrinho total :growl"
+                                     styleClass="ui-button-danger" title="Remover"/>
+                </p:column>
+            </p:dataTable>
+
+            <p:outputPanel id="total" layout="block" styleClass="fdm-total">
+                Total:
+                <strong>
+                    <h:outputText value="#{carrinhoCtrl.total}">
+                        <f:convertNumber type="currency" locale="pt_BR"/>
+                    </h:outputText>
+                </strong>
+            </p:outputPanel>
+
+            <p:commandButton value="Finalizar compra" icon="pi pi-check" action="#{carrinhoCtrl.finalizar}"
+                             ajax="false" disabled="#{empty carrinhoCtrl.itens}"/>
+            <p:button value="Continuar comprando" outcome="/index" icon="pi pi-arrow-left"
+                      styleClass="ui-button-flat"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

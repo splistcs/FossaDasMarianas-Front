@@ -1,0 +1,73 @@
+<ui:composition template="/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Produto</ui:define>
+
+    <ui:define name="conteudo">
+        <h:form id="formDetalhe">
+            <p:outputPanel rendered="#{produtoDetalheCtrl.produto == null}">
+                <p><h:outputText value="#{produtoDetalheCtrl.motivo}"/> <h:link outcome="/index" value="Voltar à vitrine"/></p>
+            </p:outputPanel>
+
+            <p:outputPanel rendered="#{produtoDetalheCtrl.produto != null}">
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-5">
+                        <p:outputPanel id="painelImagem">
+                            <h:graphicImage url="#{produtoDetalheCtrl.imagemExibida}"
+                                            alt="#{produtoDetalheCtrl.produto.nome}" styleClass="fdm-foto"
+                                            rendered="#{not empty produtoDetalheCtrl.imagemExibida}"/>
+                            <h:graphicImage name="img/sem-imagem.svg" alt="Sem imagem" styleClass="fdm-foto"
+                                            rendered="#{empty produtoDetalheCtrl.imagemExibida}"/>
+                        </p:outputPanel>
+                    </div>
+                    <div class="ui-g-12 ui-md-7">
+                        <h1><h:outputText value="#{produtoDetalheCtrl.produto.nome}"/></h1>
+                        <div class="fdm-marca">
+                            <h:outputText value="#{produtoDetalheCtrl.produto.marca}"/> &#183;
+                            <h:outputText value="#{produtoDetalheCtrl.produto.material}"/> &#183;
+                            <h:outputText value="#{produtoDetalheCtrl.produto.categoria.nome}"/>
+                        </div>
+                        <p><h:outputText value="#{produtoDetalheCtrl.produto.descricao}"/></p>
+
+                        <p:outputLabel for="sku" value="Opção: "/>
+                        <p:selectOneMenu id="sku" value="#{produtoDetalheCtrl.skuId}">
+                            <p:ajax update="painelSku painelImagem"/>
+                            <f:selectItems value="#{produtoDetalheCtrl.produto.skus}" var="s"
+                                           itemValue="#{s.id}" itemLabel="#{s.rotulo}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputPanel id="painelSku" styleClass="fdm-filtros">
+                            <div class="fdm-preco">
+                                <h:outputText value="#{produtoDetalheCtrl.skuSelecionado.preco}">
+                                    <f:convertNumber type="currency" locale="pt_BR"/>
+                                </h:outputText>
+                            </div>
+                            <div class="fdm-marca">
+                                Código: <h:outputText value="#{produtoDetalheCtrl.skuSelecionado.codigoUniversal}"/>
+                                &#183; Peso: <h:outputText value="#{produtoDetalheCtrl.skuSelecionado.pesoGramas}"/> g
+                                &#183; Dimensões (A x L x C):
+                                <h:outputText value="#{produtoDetalheCtrl.skuSelecionado.alturaCm}"/> x
+                                <h:outputText value="#{produtoDetalheCtrl.skuSelecionado.larguraCm}"/> x
+                                <h:outputText value="#{produtoDetalheCtrl.skuSelecionado.comprimentoCm}"/> cm
+                            </div>
+                            <p:outputLabel for="quantidade" value="Quantidade: "/>
+                            <p:spinner id="quantidade" value="#{produtoDetalheCtrl.quantidade}" min="1"
+                                       max="#{produtoDetalheCtrl.estoqueSelecionado}"
+                                       disabled="#{produtoDetalheCtrl.estoqueSelecionado lt 1}"/>
+                            <p:commandButton value="Adicionar ao carrinho" icon="pi pi-shopping-cart"
+                                             action="#{produtoDetalheCtrl.adicionarAoCarrinho}"
+                                             update="@form :growl :formMenu"
+                                             disabled="#{produtoDetalheCtrl.estoqueSelecionado lt 1}"/>
+                            <h:outputText value=" Sem estoque nesta opção." styleClass="fdm-marca"
+                                          rendered="#{produtoDetalheCtrl.estoqueSelecionado lt 1}"/>
+                        </p:outputPanel>
+                    </div>
+                </div>
+            </p:outputPanel>
+        </h:form>
+    </ui:define>
+</ui:composition>

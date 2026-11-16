@@ -1,0 +1,38 @@
+:root {
+  --fdm-abismo: #023e58;
+  --fdm-mar: #0a7a94;
+  --fdm-areia: #f4e9d8;
+  --fdm-coral: #ff7a59;
+}
+body { margin: 0; background: #fbf8f2; color: #1d2b33; }
+.fdm-menu { border-radius: 0 !important; }
+.fdm-hero {
+  background: linear-gradient(135deg, var(--fdm-abismo), var(--fdm-mar));
+  color: #fff; padding: 3rem 1.5rem; text-align: center;
+}
+.fdm-hero h1 { margin: 0 0 .5rem; font-size: 2.4rem; }
+.fdm-hero p { margin: 0; opacity: .9; }
+.fdm-conteudo { max-width: 1100px; margin: 1.5rem auto; padding: 0 1rem; }
+.fdm-rodape {
+  background: var(--fdm-abismo); color: var(--fdm-areia);
+  text-align: center; padding: 1rem; margin-top: 2rem; font-size: .9rem;
+}
+.fdm-foto { width: 100%; height: 200px; object-fit: cover; border-radius: 6px; }
+.fdm-preco { color: var(--fdm-abismo); font-size: 1.2rem; font-weight: 700; }
+.fdm-marca { color: #5b6b73; font-size: .9rem; }
+.fdm-filtros { margin: 1rem 0; }
+.fdm-total { text-align: right; font-size: 1.3rem; margin: 1rem 0; }
+.fdm-formulario label { font-weight: 600; }
+.fdm-formulario .ui-inputfield, .fdm-formulario .ui-selectonemenu { width: 100%; }
+
+/* balaozinho do adm */
+.fdm-dock {
+  position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 1000;
+  display: flex; flex-direction: column; align-items: center; gap: .6rem;
+  padding: .7rem .5rem; background: #fff; border: 2px solid var(--fdm-mar);
+  border-radius: 2rem; box-shadow: 0 6px 20px rgba(2, 62, 88, .35);
+}
+.fdm-dock-titulo {
+  font-size: .65rem; font-weight: 700; text-transform: uppercase; color: var(--fdm-abismo);
+}
+.fdm-saudacao { margin-right: .5rem; }

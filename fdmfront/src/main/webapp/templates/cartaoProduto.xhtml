@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <!-- Espera a variável produto definida pelo outro xhtml que pede esse -->
+    <p:panel styleClass="fdm-cartao">
+        <h:graphicImage url="#{produto.imagemPrincipalUrl}" alt="#{produto.nome}" styleClass="fdm-foto"
+                        rendered="#{not empty produto.imagemPrincipalUrl}"/>
+        <h:graphicImage name="img/sem-imagem.svg" alt="Sem imagem" styleClass="fdm-foto"
+                        rendered="#{empty produto.imagemPrincipalUrl}"/>
+        <h3><h:outputText value="#{produto.nome}"/></h3>
+        <div class="fdm-marca">
+            <h:outputText value="#{produto.marca}"/> &#183; <h:outputText value="#{produto.material}"/>
+        </div>
+        <div class="fdm-preco">
+            <h:outputText value="a partir de " rendered="#{produto.precoInicial != null}"/>
+            <h:outputText value="#{produto.precoInicial}" rendered="#{produto.precoInicial != null}">
+                <f:convertNumber type="currency" locale="pt_BR"/>
+            </h:outputText>
+        </div>
+        <p:button outcome="/produto" value="Ver detalhes" icon="pi pi-eye">
+            <f:param name="id" value="#{produto.id}"/>
+        </p:button>
+    </p:panel>
+</ui:composition>

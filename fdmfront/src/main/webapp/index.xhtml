@@ -1,0 +1,34 @@
+<ui:composition template="/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Vitrine</ui:define>
+
+    <ui:define name="conteudo">
+        <section class="fdm-hero">
+            <h1>Fossa das Marianas</h1>
+            <p>Moda praiana para mergulhar fundo no verão.</p>
+        </section>
+
+        <h:form id="formVitrine">
+            <div class="fdm-filtros">
+                <p:outputLabel for="categoria" value="Categoria: "/>
+                <p:selectOneMenu id="categoria" value="#{vitrineCtrl.categoriaId}">
+                    <p:ajax listener="#{vitrineCtrl.filtrar}" update="listaProdutos :growl"/>
+                    <f:selectItem itemLabel="Todas as categorias" itemValue="#{null}" noSelectionOption="true"/>
+                    <f:selectItems value="#{vitrineCtrl.categorias}" var="cat"
+                                   itemValue="#{cat.id}" itemLabel="#{cat.nome}"/>
+                </p:selectOneMenu>
+            </div>
+
+            <p:dataGrid id="listaProdutos" value="#{vitrineCtrl.produtos}" var="produto"
+                        columns="3" rows="9" paginator="true" paginatorPosition="bottom"
+                        emptyMessage="Nenhum produto disponível no momento.">
+                <ui:include src="/templates/cartaoProduto.xhtml"/>
+            </p:dataGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

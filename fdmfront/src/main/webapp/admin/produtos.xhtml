@@ -1,0 +1,130 @@
+<ui:composition template="/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Produtos</ui:define>
+
+    <ui:define name="conteudo">
+        <h1>Produtos</h1>
+
+        <h:form id="formLista">
+            <p:commandButton value="Novo produto" icon="pi pi-plus" action="#{produtoCtrl.novo}"
+                             process="@this" update=":formDialogo" oncomplete="PF('dlgProduto').show()"/>
+
+            <p:dataTable id="tabela" value="#{produtoCtrl.produtos}" var="item" styleClass="fdm-filtros"
+                         emptyMessage="Nenhum produto cadastrado." paginator="true" rows="10">
+                <p:column headerText="Id" style="width: 5rem">
+                    <h:outputText value="#{item.id}"/>
+                </p:column>
+                <p:column headerText="Nome">
+                    <h:outputText value="#{item.nome}"/>
+                </p:column>
+                <p:column headerText="Marca">
+                    <h:outputText value="#{item.marca}"/>
+                </p:column>
+                <p:column headerText="Categoria">
+                    <h:outputText value="#{item.categoria.nome}"/>
+                </p:column>
+                <p:column headerText="Preço inicial">
+                    <h:outputText value="#{item.precoInicial}">
+                        <f:convertNumber type="currency" locale="pt_BR"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Estoque" style="width: 6rem">
+                    <h:outputText value="#{item.estoqueTotal}"/>
+                </p:column>
+                <p:column headerText="Ativo" style="width: 6rem">
+                    <h:outputText value="#{item.ativo ? 'Sim' : 'Não'}"/>
+                </p:column>
+                <p:column headerText="Ações" style="width: 9rem; text-align: center">
+                    <p:commandButton icon="pi pi-pencil" action="#{produtoCtrl.editar(item)}"
+                                     process="@this" update=":formDialogo :growl" title="Editar"/>
+                    <p:commandButton icon="pi pi-trash" action="#{produtoCtrl.excluir(item)}"
+                                     process="@this" update="tabela :growl" styleClass="ui-button-danger"
+                                     title="Excluir">
+                        <p:confirm header="Excluir produto" message="Deseja excluir este produto e seus SKUs?"
+                                   icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <h:form id="formDialogo" styleClass="fdm-formulario">
+            <p:dialog widgetVar="dlgProduto" visible="#{produtoCtrl.exibirDialogo}" header="Produto" modal="true" responsive="true"
+                      closeOnEscape="true" width="95%" style="max-width: 1000px">
+                <p:ajax event="close" listener="#{produtoCtrl.fecharDialogo}"/>
+                <p:outputPanel id="painel" styleClass="ui-fluid">
+                    <p:outputLabel for="nome" value="Nome"/>
+                    <p:inputText id="nome" value="#{produtoCtrl.produto.nome}"/>
+
+                    <p:outputLabel for="descricao" value="Descrição"/>
+                    <p:inputTextarea id="descricao" value="#{produtoCtrl.produto.descricao}" rows="3"/>
+
+                    <p:outputLabel for="material" value="Material"/>
+                    <p:inputText id="material" value="#{produtoCtrl.produto.material}"/>
+
+                    <p:outputLabel for="marca" value="Marca"/>
+                    <p:inputText id="marca" value="#{produtoCtrl.produto.marca}"/>
+
+                    <p:outputLabel for="imagem" value="URL da imagem principal"/>
+                    <p:inputText id="imagem" value="#{produtoCtrl.produto.imagemPrincipalUrl}"/>
+
+                    <p:outputLabel for="categoria" value="Categoria"/>
+                    <p:selectOneMenu id="categoria" value="#{produtoCtrl.categoriaId}">
+                        <f:selectItem itemLabel="Sem categoria" itemValue="#{null}" noSelectionOption="true"/>
+                        <f:selectItems value="#{produtoCtrl.categorias}" var="cat"
+                                       itemValue="#{cat.id}" itemLabel="#{cat.nome}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="ativo" value="Ativo"/><br/>
+                    <p:toggleSwitch id="ativo" value="#{produtoCtrl.produto.ativo}"/>
+
+                    <h3>SKUs</h3>
+                    <p:dataTable id="tabelaSkus" value="#{produtoCtrl.produto.skus}" var="sku"
+                                 emptyMessage="Nenhum SKU.">
+                        <p:column headerText="Código">
+                            <p:inputText value="#{sku.codigoUniversal}"/>
+                        </p:column>
+                        <p:column headerText="Preço">
+                            <p:inputNumber value="#{sku.preco}" decimalPlaces="2" symbol="R$ "
+                                           decimalSeparator="," thousandSeparator="." minValue="0"/>
+                        </p:column>
+                        <p:column headerText="Estoque">
+                            <p:inputNumber value="#{sku.estoque}" decimalPlaces="0" minValue="0"/>
+                        </p:column>
+                        <p:column headerText="Peso (g)">
+                            <p:inputNumber value="#{sku.pesoGramas}" decimalPlaces="0" minValue="0"/>
+                        </p:column>
+                        <p:column headerText="Alt. (cm)">
+                            <p:inputNumber value="#{sku.alturaCm}" decimalPlaces="0" minValue="0"/>
+                        </p:column>
+                        <p:column headerText="Larg. (cm)">
+                            <p:inputNumber value="#{sku.larguraCm}" decimalPlaces="0" minValue="0"/>
+                        </p:column>
+                        <p:column headerText="Comp. (cm)">
+                            <p:inputNumber value="#{sku.comprimentoCm}" decimalPlaces="0" minValue="0"/>
+                        </p:column>
+                        <p:column headerText="Especificações">
+                            <p:inputText value="#{sku.especificacoesTexto}" placeholder="Tamanho=M; Cor=Azul; Imagem=https://..."/>
+                        </p:column>
+                        <p:column style="width: 4rem; text-align: center">
+                            <p:commandButton icon="pi pi-trash" action="#{produtoCtrl.removerSku(sku)}"
+                                             process="@form" update="tabelaSkus :growl"
+                                             styleClass="ui-button-danger" title="Remover SKU"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="Adicionar SKU" icon="pi pi-plus" action="#{produtoCtrl.adicionarSku}"
+                                     process="@form" update="tabelaSkus :growl"
+                                     styleClass="ui-button-secondary"/>
+                </p:outputPanel>
+                <f:facet name="footer">
+                    <p:commandButton value="Salvar" icon="pi pi-check" action="#{produtoCtrl.salvar}"
+                                     process="@form" update="painel :formLista:tabela :growl"/>
+                </f:facet>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

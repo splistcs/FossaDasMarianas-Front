@@ -1,0 +1,97 @@
+<ui:composition template="/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">SKUs</ui:define>
+
+    <ui:define name="conteudo">
+        <h1>SKUs</h1>
+
+        <h:form id="formLista">
+            <p:commandButton value="Novo SKU" icon="pi pi-plus" action="#{skuCtrl.novo}"
+                             process="@this" update=":formDialogo" oncomplete="PF('dlgSku').show()"/>
+
+            <p:dataTable id="tabela" value="#{skuCtrl.skus}" var="item" styleClass="fdm-filtros"
+                         emptyMessage="Nenhum SKU cadastrado." paginator="true" rows="10">
+                <p:column headerText="Produto">
+                    <h:outputText value="#{item.produtoNome}"/>
+                </p:column>
+                <p:column headerText="Código">
+                    <h:outputText value="#{item.sku.codigoUniversal}"/>
+                </p:column>
+                <p:column headerText="Especificações">
+                    <h:outputText value="#{item.sku.especificacoesTexto}"/>
+                </p:column>
+                <p:column headerText="Preço">
+                    <h:outputText value="#{item.sku.preco}">
+                        <f:convertNumber type="currency" locale="pt_BR"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Estoque" style="width: 6rem">
+                    <h:outputText value="#{item.sku.estoque}"/>
+                </p:column>
+                <p:column headerText="Ações" style="width: 9rem; text-align: center">
+                    <p:commandButton icon="pi pi-pencil" action="#{skuCtrl.editar(item)}"
+                                     process="@this" update=":formDialogo" oncomplete="PF('dlgSku').show()"
+                                     title="Editar"/>
+                    <p:commandButton icon="pi pi-trash" action="#{skuCtrl.excluir(item)}"
+                                     process="@this" update="tabela :growl" styleClass="ui-button-danger"
+                                     title="Excluir">
+                        <p:confirm header="Excluir SKU" message="Deseja excluir este SKU?"
+                                   icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <h:form id="formDialogo" styleClass="fdm-formulario">
+            <p:dialog widgetVar="dlgSku" visible="#{skuCtrl.exibirDialogo}" header="SKU" modal="true"
+                      responsive="true" closeOnEscape="true" width="480">
+                <p:ajax event="close" listener="#{skuCtrl.fecharDialogo}"/>
+                <p:outputPanel id="painel" styleClass="ui-fluid">
+                    <p:outputLabel for="produto" value="Produto"/>
+                    <p:selectOneMenu id="produto" value="#{skuCtrl.produtoId}" disabled="#{skuCtrl.edicao}">
+                        <f:selectItem itemLabel="Selecione o produto" itemValue="#{null}"
+                                      noSelectionOption="true"/>
+                        <f:selectItems value="#{skuCtrl.produtos}" var="prod"
+                                       itemValue="#{prod.id}" itemLabel="#{prod.nome}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="codigo" value="Código universal"/>
+                    <p:inputText id="codigo" value="#{skuCtrl.sku.codigoUniversal}"/>
+
+                    <p:outputLabel for="preco" value="Preço"/>
+                    <p:inputNumber id="preco" value="#{skuCtrl.sku.preco}" decimalPlaces="2" symbol="R$ "
+                                   decimalSeparator="," thousandSeparator="." minValue="0"/>
+
+                    <p:outputLabel for="estoque" value="Estoque"/>
+                    <p:inputNumber id="estoque" value="#{skuCtrl.sku.estoque}" decimalPlaces="0" minValue="0"/>
+
+                    <p:outputLabel for="peso" value="Peso (g)"/>
+                    <p:inputNumber id="peso" value="#{skuCtrl.sku.pesoGramas}" decimalPlaces="0" minValue="0"/>
+
+                    <p:outputLabel for="altura" value="Altura (cm)"/>
+                    <p:inputNumber id="altura" value="#{skuCtrl.sku.alturaCm}" decimalPlaces="0" minValue="0"/>
+
+                    <p:outputLabel for="largura" value="Largura (cm)"/>
+                    <p:inputNumber id="largura" value="#{skuCtrl.sku.larguraCm}" decimalPlaces="0" minValue="0"/>
+
+                    <p:outputLabel for="comprimento" value="Comprimento (cm)"/>
+                    <p:inputNumber id="comprimento" value="#{skuCtrl.sku.comprimentoCm}" decimalPlaces="0"
+                                   minValue="0"/>
+
+                    <p:outputLabel for="especificacoes" value="Especificações"/>
+                    <p:inputText id="especificacoes" value="#{skuCtrl.sku.especificacoesTexto}"
+                                 placeholder="Tamanho=M; Cor=Azul; Imagem=https://..."/>
+                </p:outputPanel>
+                <f:facet name="footer">
+                    <p:commandButton value="Salvar" icon="pi pi-check" action="#{skuCtrl.salvar}"
+                                     process="@form" update="painel :formLista:tabela :growl"/>
+                </f:facet>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

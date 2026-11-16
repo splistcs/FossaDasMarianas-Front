@@ -1,0 +1,40 @@
+<ui:composition template="/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Buscar</ui:define>
+
+    <ui:define name="conteudo">
+        <h1>Buscar produtos</h1>
+        <h:form id="formBusca" styleClass="fdm-formulario">
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid">
+                <p:outputLabel for="nome" value="Nome *"/>
+                <p:inputText id="nome" value="#{buscaCtrl.nome}"/>
+
+                <p:outputLabel for="material" value="Material"/>
+                <p:inputText id="material" value="#{buscaCtrl.material}"/>
+
+                <p:outputLabel for="marca" value="Marca"/>
+                <p:inputText id="marca" value="#{buscaCtrl.marca}"/>
+
+                <p:outputLabel for="categoria" value="Categoria"/>
+                <p:selectOneMenu id="categoria" value="#{buscaCtrl.categoriaId}">
+                    <f:selectItem itemLabel="Todas" itemValue="#{null}" noSelectionOption="true"/>
+                    <f:selectItems value="#{buscaCtrl.categorias}" var="cat"
+                                   itemValue="#{cat.id}" itemLabel="#{cat.nome}"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+            <p:commandButton value="Pesquisar" icon="pi pi-search" action="#{buscaCtrl.pesquisar}"
+                             update="resultados :growl"/>
+
+            <p:dataGrid id="resultados" value="#{buscaCtrl.resultados}" var="produto"
+                        columns="3" rows="9" paginator="true" paginatorPosition="bottom"
+                        emptyMessage="#{buscaCtrl.pesquisou ? 'Nenhum produto encontrado.' : 'Informe o nome e pesquise.'}">
+                <ui:include src="/templates/cartaoProduto.xhtml"/>
+            </p:dataGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

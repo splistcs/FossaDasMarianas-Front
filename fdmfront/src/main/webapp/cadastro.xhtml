@@ -1,0 +1,82 @@
+<ui:composition template="/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Criar conta</ui:define>
+
+    <ui:define name="conteudo">
+        <h1>Criar conta</h1>
+        <p>Sua solicitação será analisada pelo gestor. Depois da aprovação, sua conta fica ativa.</p>
+        <h:form id="formSolicitacao" styleClass="fdm-formulario">
+            <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid">
+                <p:outputLabel for="nome" value="Nome completo"/>
+                <p:inputText id="nome" value="#{solicitarCadastroCtrl.solicitacao.nomeCompleto}"
+                             required="true" requiredMessage="Informe o nome completo"/>
+                <p:message for="nome"/>
+
+                <p:outputLabel for="email" value="E-mail"/>
+                <p:inputText id="email" value="#{solicitarCadastroCtrl.solicitacao.email}"
+                             required="true" requiredMessage="Informe o e-mail"/>
+                <p:message for="email"/>
+
+                <p:outputLabel for="cpf" value="CPF"/>
+                <p:inputMask id="cpf" value="#{solicitarCadastroCtrl.solicitacao.cpf}"
+                             mask="999.999.999-99" required="true" requiredMessage="Informe o CPF"/>
+                <p:message for="cpf"/>
+
+                <p:outputLabel for="telefone" value="Telefone"/>
+                <p:inputMask id="telefone" value="#{solicitarCadastroCtrl.solicitacao.telefone}"
+                             mask="(99) 99999-9999" required="true" requiredMessage="Informe o telefone"/>
+                <p:message for="telefone"/>
+
+                <p:outputLabel for="senha" value="Senha (8 a 72 caracteres)"/>
+                <p:password id="senha" value="#{solicitarCadastroCtrl.solicitacao.senha}"
+                            required="true" requiredMessage="Informe a senha"/>
+                <p:message for="senha"/>
+
+                <p:outputLabel for="confirmacao" value="Confirmar senha"/>
+                <p:password id="confirmacao" value="#{solicitarCadastroCtrl.confirmacaoSenha}"
+                            required="true" requiredMessage="Confirme a senha"/>
+                <p:message for="confirmacao"/>
+            </p:panelGrid>
+
+            <h3>Endereço</h3>
+            <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid">
+                <p:outputLabel for="cep" value="CEP"/>
+                <p:inputMask id="cep" value="#{solicitarCadastroCtrl.endereco.cep}" mask="99999-999"
+                             required="true" requiredMessage="Informe o CEP"/>
+                <p:message for="cep"/>
+
+                <p:outputLabel for="rua" value="Rua"/>
+                <p:inputText id="rua" value="#{solicitarCadastroCtrl.endereco.rua}"
+                             required="true" requiredMessage="Informe a rua"/>
+                <p:message for="rua"/>
+
+                <p:outputLabel for="numero" value="Número"/>
+                <p:inputText id="numero" value="#{solicitarCadastroCtrl.endereco.numero}"
+                             required="true" requiredMessage="Informe o número"/>
+                <p:message for="numero"/>
+
+                <p:outputLabel for="complemento" value="Complemento"/>
+                <p:inputText id="complemento" value="#{solicitarCadastroCtrl.endereco.complemento}"/>
+                <p:message for="complemento"/>
+
+                <p:outputLabel for="bairro" value="Bairro"/>
+                <p:inputText id="bairro" value="#{solicitarCadastroCtrl.endereco.bairro}"
+                             required="true" requiredMessage="Informe o bairro"/>
+                <p:message for="bairro"/>
+
+                <p:outputLabel for="cidade" value="Cidade"/>
+                <p:inputText id="cidade" value="#{solicitarCadastroCtrl.endereco.cidade}"
+                             required="true" requiredMessage="Informe a cidade"/>
+                <p:message for="cidade"/>
+            </p:panelGrid>
+
+            <p:commandButton value="Enviar solicitação" icon="pi pi-user-plus"
+                             action="#{solicitarCadastroCtrl.solicitar}" update="@form :growl"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

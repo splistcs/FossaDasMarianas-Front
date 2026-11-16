@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#d9eef3"/>
+  <path d="M0 210 Q50 190 100 210 T200 210 T300 210 T400 210 V300 H0 Z" fill="#0a7a94" opacity=".35"/>
+  <path d="M0 240 Q50 220 100 240 T200 240 T300 240 T400 240 V300 H0 Z" fill="#023e58" opacity=".5"/>
+  <text x="200" y="130" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#023e58">Sem imagem</text>
+</svg>

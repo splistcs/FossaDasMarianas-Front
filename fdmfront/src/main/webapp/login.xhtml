@@ -1,0 +1,29 @@
+<ui:composition template="/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Entrar</ui:define>
+
+    <ui:define name="conteudo">
+        <h1>Entrar</h1>
+        <h:form id="formLogin" styleClass="fdm-formulario">
+            <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid">
+                <p:outputLabel for="email" value="E-mail"/>
+                <p:inputText id="email" value="#{fazerLoginCtrl.email}" required="true"
+                             requiredMessage="Informe o e-mail"/>
+                <p:message for="email"/>
+
+                <p:outputLabel for="senha" value="Senha"/>
+                <p:password id="senha" value="#{fazerLoginCtrl.senha}" required="true"
+                            requiredMessage="Informe a senha"/>
+                <p:message for="senha"/>
+            </p:panelGrid>
+            <p:commandButton value="Entrar" icon="pi pi-sign-in" action="#{fazerLoginCtrl.entrar}"
+                             ajax="false"/>
+            <h:link outcome="/cadastro" value="Ainda não tem conta? Cadastre-se"/>
+        </h:form>
+    </ui:define>
+</ui:composition>
