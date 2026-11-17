@@ -1,4 +1,4 @@
-<ui:composition template="/templates/layout.xhtml"
+<ui:composition template="/templates/Layout.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="jakarta.faces.html"
                 xmlns:f="jakarta.faces.core"
@@ -13,22 +13,37 @@
             <p>Moda praiana para mergulhar fundo no verão.</p>
         </section>
 
-        <h:form id="formVitrine">
-            <div class="fdm-filtros">
-                <p:outputLabel for="categoria" value="Categoria: "/>
-                <p:selectOneMenu id="categoria" value="#{vitrineCtrl.categoriaId}">
-                    <p:ajax listener="#{vitrineCtrl.filtrar}" update="listaProdutos :growl"/>
-                    <f:selectItem itemLabel="Todas as categorias" itemValue="#{null}" noSelectionOption="true"/>
-                    <f:selectItems value="#{vitrineCtrl.categorias}" var="cat"
-                                   itemValue="#{cat.id}" itemLabel="#{cat.nome}"/>
-                </p:selectOneMenu>
-            </div>
+        <h:form id="formBusca">
+          <p:menubar styleClass="fdm-menu-2">
+            <f:facet name="start">
+              <div class="fdm-pesquisar">
+                <ui:include src="/header/PesquisarProduto.xhtml"/>
+              </div>
+            </f:facet>
 
-            <p:dataGrid id="listaProdutos" value="#{vitrineCtrl.produtos}" var="produto"
-                        columns="3" rows="9" paginator="true" paginatorPosition="bottom"
-                        emptyMessage="Nenhum produto disponível no momento.">
-                <ui:include src="/templates/cartaoProduto.xhtml"/>
-            </p:dataGrid>
+            <f:facet name="end">
+              <div class="fdm-filtros">
+                <p:selectOneMenu id="categoria" value="#{vitrineCtrl.categoriaId}">
+                  <p:ajax listener="#{vitrineCtrl.filtrar}" update="listaProdutos :growl"/>
+                  <f:selectItem itemLabel="Todas as categorias" itemValue="#{null}" noSelectionOption="true"/>
+                  <f:selectItems value="#{vitrineCtrl.categorias}" var="cat" itemValue="#{cat.id}" itemLabel="#{cat.nome}"/>
+                </p:selectOneMenu>
+              </div>
+            </f:facet>
+          </p:menubar>
+        </h:form>
+
+        <h:form id="formVitrine">
+          <p:dataGrid id="listaProdutos" 
+                      value="#{buscaCtrl.pesquisou ? buscaCtrl.resultados : vitrineCtrl.produtos}"
+                      var="produto"
+                      columns="3" 
+                      rows="9" 
+                      paginator="true" 
+                      paginatorPosition="bottom"
+                      emptyMessage="Nenhum produto disponível no momento.">
+            <ui:include src="/templates/cartaoProduto.xhtml"/>
+          </p:dataGrid>
         </h:form>
     </ui:define>
 </ui:composition>

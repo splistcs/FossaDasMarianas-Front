@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+  <!-- busca normal -->
+  <div class="pesqusisarProduto-1">
+    <p:inputText class="ppi1" id="nome" value="#{buscaCtrl.nome}"/>
+
+    <p:commandButton value="Pesquisar" icon="pi pi-search" 
+                                       action="#{buscaCtrl.pesquisar}"
+                                       ajax="false"/>
+  </div>
+
+  <br/>
+  <!-- busca avançada -->
+  <p:fieldset legend="Avançado" toggleable="true" collapsed="true">
+    <div class="pesquisarProduto-2">
+      <p:inputText class="ppi2a" placeholder="Material" value="#{buscaCtrl.material}"/>
+      <p:inputText class="ppi2b" placeholder="Marca" value="#{buscaCtrl.marca}"/>
+    </div>
+  </p:fieldset>
+</ui:composition>

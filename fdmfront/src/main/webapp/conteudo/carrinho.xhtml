@@ -1,4 +1,4 @@
-<ui:composition template="/templates/layout.xhtml"
+<ui:composition template="/templates/Layout.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="jakarta.faces.html"
                 xmlns:f="jakarta.faces.core"
@@ -11,8 +11,8 @@
         <h1>Seu carrinho</h1>
 
         <p:outputPanel rendered="#{not sessaoCtrl.logado}">
-            <p>Para comprar, <h:link outcome="/login" value="entre na sua conta"/> ou
-                <h:link outcome="/cadastro" value="crie uma conta"/>.</p>
+            <p>Para comprar, <h:link outcome="/conteudo/login" value="entre na sua conta"/> ou
+                <h:link outcome="/conteudo/cadastro" value="crie uma conta"/>.</p>
         </p:outputPanel>
 
         <h:form id="formCarrinho" rendered="#{sessaoCtrl.logado}">

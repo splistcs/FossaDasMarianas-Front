@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+  <h:form id="formMenu">
+  <!-- opções gerais - redireciona -->
+    <p:menubar styleClass="fdm-menu-1">
+      <p:menuitem value="Fossa das Marianas" outcome="/index" icon="pi pi-compass"/>
+      <p:menuitem value="Vitrine" outcome="/index" icon="pi pi-home"/>
+      <p:menuitem value="Entrar" outcome="/conteudo/login" icon="pi pi-sign-in" rendered="#{not sessaoCtrl.logado}"/>
+      <p:menuitem value="Criar conta" outcome="/conteudo/cadastro" icon="pi pi-user-plus" rendered="#{not sessaoCtrl.logado}"/>
+      <p:menuitem value="Meus pedidos" outcome="/conteudo/pedidos" icon="pi pi-list" rendered="#{sessaoCtrl.logado}"/>
+      <p:submenu label="Administração" icon="pi pi-cog" rendered="#{sessaoCtrl.admin}">
+        <p:menuitem value="Categorias" outcome="/admin/categorias" icon="pi pi-tags"/>
+        <p:menuitem value="Produtos" outcome="/admin/produtos" icon="pi pi-box"/>
+        <p:menuitem value="SKUs" outcome="/admin/skus" icon="pi pi-barcode"/>
+        <p:menuitem value="Solicitações" outcome="/admin/solicitacoes" icon="pi pi-inbox"/>
+        <p:menuitem value="Cadastros" outcome="/admin/cadastros" icon="pi pi-users"/>
+      </p:submenu>
+      <f:facet name="options">
+        <h:outputText value="Olá, #{sessaoCtrl.nomeUsuario} " styleClass="fdm-saudacao" rendered="#{sessaoCtrl.logado}"/>
+        <p:commandButton value="Sair" icon="pi pi-sign-out" action="#{sessaoCtrl.sair}" ajax="false" styleClass="ui-button-flat" rendered="#{sessaoCtrl.logado}"/>
+        <p:button outcome="/conteudo/carrinho" icon="pi pi-shopping-cart" value="Carrinho"/>
+      </f:facet>
+    </p:menubar>
+  </h:form>
+
+
+</ui:composition>
