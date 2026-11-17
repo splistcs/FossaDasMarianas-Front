@@ -25,6 +25,63 @@ body { margin: 0; background: #fbf8f2; color: #1d2b33; }
 .fdm-formulario label { font-weight: 600; }
 .fdm-formulario .ui-inputfield, .fdm-formulario .ui-selectonemenu { width: 100%; }
 
+/* segundo menubar 
+ * background: #D8E3F4; TALVEZ?
+ * border: 4px solid #C7D7EF;*/
+.fdm-menu-1 {
+  margin-bottom: 0;
+}
+.fdm-menu-2 {
+    max-width: 1100px;
+    margin-top: 0;
+    margin: 0rem auto;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    border-radius: 0px !important;
+}
+
+.fdm-menu-2 .ui-menubar-start,
+.fdm-menu-2 .ui-menubar-end {
+    display: flex;
+    align-items: flex-start;
+}
+
+.fdm-pesquisar {
+    width: 750px;
+    max-width: 100%;
+}
+
+.pesqusisarProduto-1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.pesqusisarProduto-1 .ppi1 {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+}
+
+.fdm-filtros {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.pesquisarProduto-2 {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap:10px
+}
+
+.pesquisarProduto-2 .ppi2a,
+.pesquisarProduto-2 .ppi2b {
+    width: 100%;
+}
+
 /* balaozinho do adm */
 .fdm-dock {
   position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 1000;
